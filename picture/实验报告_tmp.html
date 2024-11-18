@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>实验报告.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h2 id="center%E4%BF%A1%E6%81%AF%E6%A3%80%E7%B4%A2%E5%AF%BC%E8%AE%BA%E5%A4%A7%E4%BD%9C%E4%B8%9A-center"><center>信息检索导论大作业 </center></h2>
+<h4 id="center-llamaindex%E6%A1%86%E6%9E%B6%E5%AE%9E%E7%8E%B0%E5%A2%9E%E5%BC%BA%E6%A3%80%E7%B4%A2%E7%9A%84%E8%B6%B3%E7%90%83%E7%A7%81%E5%9F%9F%E7%9F%A5%E8%AF%86%E5%AF%B9%E8%AF%9D%E6%A8%A1%E5%9E%8B-center"><center> ——LlamaIndex框架实现增强检索的足球私域知识对话模型 </center></h4>
+<h5 id="center-%E8%B7%AF%E6%AC%A3%E8%89%BE-2021201226-luxinai2003ruceducncenter"><center> 路欣艾  2021201226 luxinai_2003@ruc.edu.cn</center></h5>
+<h3 id="%E4%B8%80-%E5%AE%9E%E9%AA%8C%E8%A6%81%E6%B1%82">一、 实验要求</h3>
+<p>以ChatGPT为代表的大语言模型（LLM）在自然语言理解和生成方面展现出强大的能力，检索增强生成 (Retrieval-Augmented Generation, RAG) 技术是指在利用大语言模型回答问题之前，先从外部知识源检索相关信息，提供给大语言模型，这让LLM可以充分利用外部知识资源生成更准确和更符合上下文的答案。</p>
+<p>本项目要求使用<code>LlamaIndex</code>框架，基于大语言模型和检索增强生成技术，构建一个可以回答2024年足球新闻问题的系统。</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image.png" alt="alt text"></p>
+<p>具体的要求包括：</p>
+<blockquote>
+<ul>
+<li>数据集：使用给定的2024年足球新闻文章数据集<code>（data.csv）</code></li>
+<li>基础RAG系统实现：使用<code>LlamaIndex</code>框架构建基本的RAG系统，包括索引、检索和生成步骤。</li>
+<li>改进与优化：尝试不同的分块策略和大小、嵌入模型、多级索引、查询重写、混合检索和重新排序等方法来优化系统性能。</li>
+<li>评估：设计实验评估基础和改进后的系统，提供性能指标和实例。</li>
+</ul>
+</blockquote>
+<h3 id="%E4%BA%8C%E5%AE%9E%E7%8E%B0%E6%80%9D%E8%B7%AF">二、实现思路</h3>
+<h3 id="%E4%B8%89llamaindex%E5%9F%BA%E6%9C%AC%E5%AF%B9%E8%AF%9D%E6%A8%A1%E5%9E%8B">三、<code>LlamaIndex</code>基本对话模型</h3>
+<h4 id="1-openai-api">1. Openai API</h4>
+<pre class="hljs"><code><div>
+<span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">from</span> dotenv <span class="hljs-keyword">import</span> load_dotenv
+
+OPENAI_API_KEY = <span class="hljs-string">'OPENAI_API_KEY'</span> 
+os.environ[<span class="hljs-string">'OPENAI_API_KEY'</span>] = <span class="hljs-string">'OPENAI_API_KEY'</span> 
+
+load_dotenv()
+</div></code></pre>
+<h4 id="2-%E6%95%B0%E6%8D%AE%E9%9B%86%E5%87%86%E5%A4%87">2. 数据集准备</h4>
+<p>读取<code>documents</code>，把文件用 <code>SimpleDirectoryReader</code> 方法存成 <code>documents</code>。</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">import</span> gradio <span class="hljs-keyword">as</span> gr
+<span class="hljs-keyword">import</span> openai
+
+<span class="hljs-keyword">from</span> llama_index.core <span class="hljs-keyword">import</span> VectorStoreIndex,SimpleDirectoryReader,
+ServiceContext,PromptTemplate
+<span class="hljs-keyword">from</span> llama_index.core.schema <span class="hljs-keyword">import</span> IndexNode
+
+<span class="hljs-keyword">from</span> llama_index.core <span class="hljs-keyword">import</span> (
+    GPTKeywordTableIndex,
+    SimpleDirectoryReader,
+    ServiceContext
+)
+
+documents = SimpleDirectoryReader(input_dir=<span class="hljs-string">'./data'</span>).load_data()
+</div></code></pre>
+<h4 id="3-%E5%BB%BA%E7%AB%8Bopenaiembeddings%E7%B4%A2%E5%BC%95">3. 建立<code>OpenAIEmbeddings</code>索引</h4>
+<p>采用最普通的索引方式<code>OpenAIEmbeddings</code>，这个过程会自动构建<code>documents</code>的<code>nodes</code>。</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> llama_index.core <span class="hljs-keyword">import</span> VectorStoreIndex,DocumentSummaryIndex
+<span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> OpenAIEmbeddings
+
+<span class="hljs-comment"># OpenAIEmbeddings()  </span>
+print(<span class="hljs-string">"OpenAIEmbeddings:"</span>)
+index_OpenAIEmbeddings = VectorStoreIndex.from_documents(documents = documents,
+ embedding = OpenAIEmbeddings(), show_progress = <span class="hljs-number">1</span>)
+</div></code></pre>
+<p>构建索引的过程：</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-1.png" alt="alt text"></p>
+<h4 id="4-rag%E6%A3%80%E7%B4%A2%E5%BC%95%E6%93%8E%E7%94%9F%E6%88%90%E5%9B%9E%E5%A4%8D-getresponsequery">4. RAG检索引擎生成回复 <code>get_response(query)</code></h4>
+<pre class="hljs"><code><div><span class="hljs-comment"># 这个位置可以替换不同的嵌入模型搞的引擎</span>
+query_engine = index_OpenAIEmbeddings.as_chat_engine(verbose=<span class="hljs-literal">True</span>)
+
+<span class="hljs-comment"># get_response函数定义</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_response</span><span class="hljs-params">(query)</span>:</span>
+    response = query_engine.query(query)
+    <span class="hljs-keyword">return</span> response
+</div></code></pre>
+<h4 id="5-gradio%E4%BA%A4%E4%BA%92%E7%95%8C%E9%9D%A2">5. <code>Gradio</code>交互界面</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> gradio <span class="hljs-keyword">as</span> gr
+<span class="hljs-keyword">from</span> gradio.components <span class="hljs-keyword">import</span> Textbox
+
+<span class="hljs-comment"># 创建Gradio界面</span>
+iface = gr.Interface(
+    fn=get_response,
+    inputs=gr.components.Textbox(lines=<span class="hljs-number">5</span>, label=<span class="hljs-string">"输入提示文本"</span>),
+    outputs=<span class="hljs-string">"text"</span>,
+    title=<span class="hljs-string">"小鹿的足球信息检索系统"</span>,
+    description=<span class="hljs-string">"使用 gpt-3.5 + 最新足球新闻的rag检索系统"</span>
+)
+
+<span class="hljs-comment"># 启动Gradio界面</span>
+iface.launch()
+</div></code></pre>
+<p>【界面与问答效果】输入问题后，点击<code>Submit</code>按钮，提交用户的问题，引擎将增强检索后的回答输出在右侧<code>output</code>对话框中；用户可以通过点击<code>Flagged</code>将问题与引擎的答复保存在后端文件中；用户可以通过点击左侧<code>Clear</code>按钮将问题清空后重新提问。</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/8abea2cac30f25fef7fb7a50b756e3e.png" alt="alt text"></p>
+<h3 id="%E5%9B%9B%E6%A8%A1%E5%9E%8B%E4%BC%98%E5%8C%96">四、模型优化</h3>
+<h4 id="1-%E4%B8%A4%E7%A7%8D%E4%B8%8D%E5%90%8Chuggingface%E5%B5%8C%E5%85%A5%E6%A8%A1%E5%9E%8B">1. 两种不同<code>HuggingFace</code>嵌入模型</h4>
+<h5 id="1bge-large-zh-v15">（1）<code>bge-large-zh-v1.5</code></h5>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-2.png" alt="alt text"></p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-3.png" alt="alt text"></p>
+<p>定义 <code>index_bge_large_zh</code>为使用该嵌入模型的索引名称。</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># bge-large-zh-v1.5</span>
+print(<span class="hljs-string">"bge-large-zh-v1.5:"</span>)
+bge_embeddings = HuggingFaceBgeEmbeddings(model_name=<span class="hljs-string">"BAAI/bge-large-zh-v1.5"</span>)
+index_bge_large_zh = VectorStoreIndex.from_documents(documents = documents, 
+                embedding = bge_embeddings, show_progress = <span class="hljs-number">1</span>)
+</div></code></pre>
+<p>生成<code>response</code>样例：</p>
+<h5 id="2bge-m3">（2）<code>bge-M3</code></h5>
+<p><code>BGE-M3</code>是首个集多语言（Multi-Linguality）、多粒度（Multi-Granularity）、多功能（Multi-Functionality）三大技术特征于一体的语义向量模型，极大提升了语义向量模型在现实世界的可用性。目前，<code>BGE-M3</code>已向社区全面开源。</p>
+<p>定义 <code>index_bge_M3</code>为使用该嵌入模型的索引名称。</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># bge-M3</span>
+print(<span class="hljs-string">"bge-M3:"</span>)
+bgeM3_embeddings = HuggingFaceBgeEmbeddings(model_name=<span class="hljs-string">"BAAI/bge-M3"</span>)
+index_bge_M3 = VectorStoreIndex.from_documents(documents = documents, 
+                embedding = bgeM3_embeddings, show_progress = <span class="hljs-number">1</span>)
+</div></code></pre>
+<p>生成<code>response</code>样例，可以看到，当询问的问题是“你是什么模型”时，增强后的引擎会加上足球相关的私域知识。</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-4.png" alt="alt text"></p>
+<h4 id="2-%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2">2. 混合检索</h4>
+<h5 id="1-%E9%A2%84%E5%A4%84%E7%90%86%E6%96%87%E6%A1%A3%E9%9B%86">(1) 预处理文档集</h5>
+<p>将<code>document</code>转换成可供<code>BM25Retriever</code>和<code>FAISS</code>对象使用<code>.from_texts()</code>初始化方法的格式<code>list</code></p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 定义空的文本列表</span>
+doc_texts = []
+splitted_texts = []
+
+<span class="hljs-comment"># 遍历每个文档对象，获取文本内容和元数据</span>
+<span class="hljs-keyword">for</span> i, doc <span class="hljs-keyword">in</span> enumerate(documents):
+    text = doc.text  <span class="hljs-comment"># text 属性用于获取文本内容</span>
+    <span class="hljs-keyword">if</span> text:
+        doc_texts.append(text)
+    <span class="hljs-keyword">else</span>:
+        doc_texts.append(<span class="hljs-string">""</span>)  <span class="hljs-comment"># 如果文本内容为空，添加一个空字符串</span>
+
+<span class="hljs-comment"># 遍历每个文本内容，按照 "http" 进行分割</span>
+<span class="hljs-keyword">for</span> text <span class="hljs-keyword">in</span> doc_texts:
+    <span class="hljs-comment"># 使用 split 方法按照 "http" 进行分割，并加入到分割后的文本列表中</span>
+    splitted_texts.extend(text.split(<span class="hljs-string">"http"</span>))
+
+<span class="hljs-comment"># 将文档转换为文本列表和元数据列表</span>
+doc_metadatas = [{<span class="hljs-string">"source"</span>: i} <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> range(len(splitted_texts))]
+</div></code></pre>
+<h5 id="2-%E5%AE%9A%E4%B9%89%E7%A8%80%E7%96%8F%E6%A3%80%E7%B4%A2bm25retriever%E5%92%8C%E7%A8%A0%E5%AF%86%E6%A3%80%E7%B4%A2faiss">(2) 定义稀疏检索<code>BM25Retriever</code>和稠密检索<code>FAISS</code></h5>
+<pre class="hljs"><code><div><span class="hljs-comment"># 尝试混合检索方式</span>
+<span class="hljs-keyword">from</span> langchain_community.retrievers <span class="hljs-keyword">import</span> BM25Retriever
+<span class="hljs-keyword">from</span> langchain_community.vectorstores <span class="hljs-keyword">import</span> FAISS
+<span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> OpenAIEmbeddings
+
+<span class="hljs-comment"># 初始化BM25检索器</span>
+bm25_retriever = BM25Retriever.from_texts(splitted_texts, metadatas = doc_metadatas)
+bm25_retriever.k = <span class="hljs-number">3</span>
+
+<span class="hljs-comment"># 初始化FAISS检索器</span>
+embedding = OpenAIEmbeddings()
+faiss_vectorstore = FAISS.from_texts(splitted_texts, embedding, metadatas=doc_metadatas)
+
+<span class="hljs-comment"># 将FAISS向量存储转化为检索器</span>
+faiss_retriever = faiss_vectorstore.as_retriever(search_kwargs={<span class="hljs-string">"k"</span>: <span class="hljs-number">3</span>})
+
+</div></code></pre>
+<h5 id="3-%E5%AE%9A%E4%B9%89%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2ensembleretriever">(3) 定义混合检索<code>EnsembleRetriever</code></h5>
+<pre class="hljs"><code><div><span class="hljs-comment"># 尝试混合检索方式</span>
+<span class="hljs-keyword">from</span> langchain.retrievers <span class="hljs-keyword">import</span> EnsembleRetriever
+<span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> OpenAIEmbeddings
+
+<span class="hljs-comment"># 初始化Ensemble Retriever</span>
+ensemble_retriever = EnsembleRetriever(
+    retrievers=[bm25_retriever, faiss_retriever], weights=[<span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>]
+)
+</div></code></pre>
+<h5 id="4-%E4%BD%BF%E7%94%A8%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E6%89%BE%E5%88%B0%E5%92%8C%E9%97%AE%E9%A2%98%E7%9B%B8%E5%85%B3%E7%9A%84%E6%96%87%E6%A1%A3">(4) 使用混合检索，找到和问题相关的文档</h5>
+<pre class="hljs"><code><div><span class="hljs-comment"># 使用Ensemble Retriever进行检索</span>
+query = <span class="hljs-string">"曼联队员在3-0战胜西汉姆的比赛中都是怎样表现的？"</span>
+docs = ensemble_retriever.invoke(query)
+
+<span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> docs:
+    print(<span class="hljs-string">f"Document ID: <span class="hljs-subst">{doc.lc_id}</span>"</span>)
+    print(<span class="hljs-string">f"Content: <span class="hljs-subst">{doc.page_content}</span>"</span>)
+    print(<span class="hljs-string">"\n---\n"</span>)
+</div></code></pre>
+<p>查询到的相关文档：</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-5.png" alt="alt text"></p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-6.png" alt="alt text"></p>
+<h5 id="4-%E5%B0%86%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E7%BB%93%E6%9E%9C%E4%B8%8E%E9%97%AE%E9%A2%98%E5%90%88%E5%B9%B6%E8%AE%A9%E5%BC%95%E6%93%8E%E7%94%9F%E6%88%90response">(4) 将混合检索结果与问题合并，让引擎生成<code>response</code></h5>
+<pre class="hljs"><code><div><span class="hljs-comment"># 将相关文档内容组合成一个字符串，传递给query_engine</span>
+doc_contents = <span class="hljs-string">"\n"</span>.join([doc.page_content <span class="hljs-keyword">for</span> doc <span class="hljs-keyword">in</span> docs])
+
+combined_query = <span class="hljs-string">f"我的问题是：<span class="hljs-subst">{query}</span>。我已知下面这些信息：<span class="hljs-subst">{doc_contents}</span>。
+                                请你根据这些内容回答。"</span>
+
+<span class="hljs-comment"># 使用query_engine进行总结和回答</span>
+response = query_engine.query(combined_query)
+
+<span class="hljs-comment"># 打印结果</span>
+print(response)
+</div></code></pre>
+<p>查询文本生成过程：
+<img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-7.png" alt="alt text"></p>
+<p>返回的<code>response</code>:</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-8.png" alt="alt text"></p>
+<blockquote>
+<p>在曼联3-0战胜西汉姆的比赛中，曼联队员表现出色，他们成功取得胜利，拉什福德、Højlund和McTominay分别攻入进球。此外，拉什福德的表现引人注目，他在最近四场英超比赛中要么进球要么助攻。Højlund也状态良好，在过去五场比赛中在各项赛事中有六次进球参与。尽管存在一些防守问题，但球队能够派出强大的阵容，关键球员回归，他们成功取得了关键的胜利。而在这场比赛中，西汉姆队员并没有表现出色，因为在提到的情况下，实际比赛是西汉姆在伦敦体育场的反向比赛中以2-0获胜。</p>
+</blockquote>
+<h4 id="3-hyde%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%86%99">3. <code>HyDE</code>查询重写</h4>
+<p><code>HyDE</code>原理的核心思想是通过生成假设性文档来优化查询表示，从而提升检索结果的相关性和准确性。</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-11.png" alt="alt text"></p>
+<p>使用<code>HyDE</code>模型实现查询重写优化技术：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># Hyde查询重写的结果</span>
+<span class="hljs-keyword">from</span> llama_index.core.indices.query.query_transform <span class="hljs-keyword">import</span> HyDEQueryTransform
+<span class="hljs-keyword">from</span> llama_index.core.query_engine <span class="hljs-keyword">import</span> TransformQueryEngine
+
+query_engine = index_bge_M3.as_chat_engine(verbose=<span class="hljs-literal">True</span>)
+
+<span class="hljs-comment"># hyde 查询重写</span>
+hyde = HyDEQueryTransform(include_original=<span class="hljs-literal">True</span>)
+hyde_query_engine = TransformQueryEngine(query_engine, hyde)
+response = hyde_query_engine.query(<span class="hljs-string">"曼联队员在3-0战胜西汉姆的比赛中都是怎样表现的？"</span>)
+</div></code></pre>
+<p>是/否查询重写的<code>response</code>比较：</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-9.png" alt="alt text"></p>
+<p><code>response</code>的具体内容如下，似乎不能说有改善。</p>
+<p>【Base Query】</p>
+<blockquote>
+<p>曼联队员在3-0战胜西汉姆的比赛中表现出色。拉什福德和霍伦德早早进球，麦克托米奈在下半场替补出场时攻入第三球。此外，科比·迈努在补时阶段打入一球，为曼联取得了胜利。</p>
+</blockquote>
+<p>【HyDE Query】</p>
+<blockquote>
+<p>曼联队员在3-0战胜西汉姆的比赛中表现出色，他们控制了比赛并创造了机会，拉什福德和Højlund早早进球。尽管有些防守问题，但他们成功地舒适地赢得了比赛。</p>
+</blockquote>
+<h3 id="%E4%BA%94%E4%BD%BF%E7%94%A8deepeval%E5%AF%B9rag%E7%B3%BB%E7%BB%9F%E6%B5%8B%E8%AF%95">五、使用<code>DeepEval</code>对RAG系统测试</h3>
+<h4 id="1-%E6%B5%8B%E8%AF%95%E6%95%B4%E4%BD%93%E6%80%9D%E8%B7%AF">1. 测试整体思路</h4>
+<p>测试一共要测试三种变量：哪种embedding、是否混合检索、是否查询重写，对这三个变量形成的组合进行5个指标的测评</p>
+<ul>
+<li>
+<p><strong>测试embedding</strong></br>
+<strong>控制变量</strong>:不混合检索、不查询重写 </br>
+<strong>测试</strong>:更换index_OpenAIEmbeddings、index_bge_large_zh、index_bge_M3，看指标</br></p>
+</li>
+<li>
+<p><strong>测试混合检索</strong> </br>
+<strong>控制变量</strong>：使用index_OpenAIEmbeddings，不查询重写 </br>
+<strong>测试</strong>：是否混合检索 </br></p>
+</li>
+<li>
+<p><strong>测试查询重写</strong> </br>
+<strong>控制变量</strong>：使用index_OpenAIEmbeddings，不混合检索 </br>
+<strong>测试</strong>：是否查询重写 </br></p>
+</li>
+</ul>
+<h4 id="2-%E6%B5%8B%E8%AF%95%E6%95%B0%E6%8D%AE%E9%9B%86%E5%87%86%E5%A4%87">2. 测试数据集准备</h4>
+<p>针对原始数据集中的新闻，本测试过程采用OpenAI公司的<code>gpt-4o</code>模型生成了20个细节问题和答案，其中，问题存为<code>questions</code>，答案存为<code>expected_outputs</code>。之所以选取20个问题，是因为openai的api接口在调用时有限额，且整个指标计算过程较慢，从经济成本和时间成本两方面考虑，本测试过程的问题集容量选取20较为合适。</p>
+<p>问题集<code>query_new</code>:</p>
+<blockquote>
+<ul>
+<li>在这次转会窗口，巴塞罗那计划如何处理财政问题以引进Amadou Onana？</li>
+<li>Karim Benzema在沙特阿拉伯遇到了哪些问题，这对他和俱乐部有何影响？</li>
+<li>曼联球员Lisandro Martinez受伤后，球队的战术和阵容发生了什么变化？</li>
+<li>Ferran Torres在比赛中向一名癌症患者致敬，这对球员和球迷有何意义？</li>
+<li>为什么Takehiro Tomiyasu在对阵West Ham United的比赛中缺席？他何时可能会重返阵容？</li>
+<li>巴塞罗那被Villarreal重创后，他们与皇马的积分差多少？这对巴萨的联赛前景有何影响？</li>
+<li>Cole Palmer在切尔西对阵水晶宫的比赛中表现出色，他提到了Mauricio Pochettino在胜利中的作用是什么？</li>
+<li>在对阵阿斯顿维拉的比赛中，切尔西的球迷建议的终极阵容是什么？</li>
+<li>在对阵托特纳姆热刺的比赛中，曼联球迷对马库斯·拉什福德的表现有什么意见？</li>
+<li>吉安路易吉·布冯表示在他职业生涯中哪个前锋对他造成了最大的痛苦？</li>
+<li>切尔西的蒂亚戈·席尔瓦在对阵水晶宫的比赛中做了什么冒险行为？</li>
+<li>2023年斯坦福桥的比赛中，哪位球员在第71分钟进球使阿斯顿维拉战胜切尔西？</li>
+<li>切尔西在2024年足总杯第三轮中以4-0战胜了哪支球队？</li>
+<li>在2024年2月初对阵埃弗顿的比赛中，阿斯顿维拉取得了什么结果？</li>
+<li>切尔西在2024年与阿斯顿维拉的比赛中，预计最有可能的比分是什么？</li>
+<li>2024年利物浦对阵阿森纳的比赛中，克洛普是否对达尔文·努涅斯不上场感到后悔？</li>
+<li>克洛普在2024年对阵阿森纳的比赛中，提到球队应该如何提高？</li>
+<li>康纳·加拉格尔在2024年对阵水晶宫的比赛中打进了多少球？</li>
+<li>康纳·加拉格尔在对阵水晶宫的比赛中，被评为比赛最佳球员后提到了什么关于主教练的战术调整？</li>
+<li>梅西、苏亚雷斯、阿尔巴和布斯克茨在2024年为哪支球队展示了他们的出色配合？</li>
+</ul>
+</blockquote>
+<p>答案集<code>expected_output</code>（数据类型为<code>list</code>）：</p>
+<blockquote>
+<ul>
+<li>巴塞罗那计划通过出售一些球员来筹集资金，可能会将Frenkie De Jong和Ronald Araujo列入出售名单，以便购买Amadou Onana。</li>
+<li>Karim Benzema与Al Ittihad的主教练Marcelo Gallardo发生了冲突，这可能对他在俱乐部的未来产生影响，并可能影响球队的氛围和战绩。</li>
+<li>Lisandro Martinez受伤后，曼联可能需要调整他们的防守组织和中场配置，可能会影响他们在比赛中的表现和战术风格。</li>
+<li>Ferran Torres的这个举动展现了他的人道主义精神和对球迷的关怀，这可能会赢得更多球迷的支持和尊重，同时也为球迷带来了温暖和鼓舞。</li>
+<li>Takehiro Tomiyasu因为国家队比赛后出现了小伤，所以缺席了比赛。目前尚不清楚他何时可以重返阵容，但希望他的伤势只是轻微的问题。</li>
+<li>巴塞罗那在主场被Villarreal以5-3击败，导致他们与皇马的积分差距达到了10分。这对巴萨本赛季的联赛前景造成了不小的影响，使得他们的冠军希望受到挑战。</li>
+<li>Cole Palmer提到了Mauricio Pochettino在胜利中的作用，称赞了他的指导和支持，认为Pochettino对球队的凝聚力和信心给予了很大的帮助。这表明了Pochettino在切尔西的作用和影响。</li>
+<li>Petrovic；迪萨西、蒂亚戈·席尔瓦、巴迪亚希尔；奇尔维尔、凯塞多、恩佐、古斯托；帕尔默、杰克逊、恩昆库。</li>
+<li>尽管拉什福德打入一球，但有一部分球迷对他的表现不满意，认为他决策糟糕，影响了球队进攻。有球迷甚至呼吁曼联在夏季将他出售。</li>
+<li>布冯表示是克里斯蒂亚诺·罗纳尔多，总是能在比赛中攻破他的球门，尤其是2018年欧冠四分之一决赛中的倒钩进球。</li>
+<li>蒂亚戈·席尔瓦冒着受伤的风险，封堵了马特塔的一次射门，但在此过程中脚踝扭伤，被利维·科尔威尔替换下场。</li>
+<li>奥利·沃特金斯 (Ollie Watkins)</li>
+<li>普雷斯顿北区 (Preston North End)</li>
+<li>平局</li>
+<li>1-1</li>
+<li>克洛普表示他不会改变首发阵容，但在比赛后可能会有不同的想法。</li>
+<li>克洛普认为球队需要踢得更好，并在接下来的比赛中展现出更好的足球水平。</li>
+<li>两个</li>
+<li>主教练在中场休息时改变了球队在对方半场的结构，使球队在下半场创造了更多机会。</li>
+<li>迈阿密国际</li>
+</ul>
+</blockquote>
+<h4 id="2-deepeval%E8%AF%84%E4%BC%B0%E6%8C%87%E6%A0%87%E9%80%89%E5%8F%96">2. <code>DeepEval</code>评估指标选取</h4>
+<h5 id="1g-eval">（1）<code>G-Eval</code></h5>
+<p>官方文档对<code>G-Eval</code>指标的描述：</p>
+<pre class="hljs"><code><div>correctness_metric = GEval(
+    name=<span class="hljs-string">"Correctness"</span>,
+    criteria=<span class="hljs-string">"Determine whether the actual output is factually"</span>+
+    <span class="hljs-string">"correct based on the expected output."</span>,
+    <span class="hljs-comment"># <span class="hljs-doctag">NOTE:</span> you can only provide either criteria or evaluation_steps, and not both</span>
+    evaluation_steps=[
+        <span class="hljs-string">"Check whether the facts in 'actual output' contradicts "</span> + 
+        <span class="hljs-string">"any facts in 'expected output'"</span>,
+        <span class="hljs-string">"You should also heavily penalize omission of detail"</span>,
+        <span class="hljs-string">"Vague language, or contradicting OPINIONS, are OK"</span>
+    ],
+    evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+)
+</div></code></pre>
+<p>定义<code>G-Eval</code>矩阵：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 引入评估指标1：G评估</span>
+<span class="hljs-keyword">from</span> deepeval.metrics <span class="hljs-keyword">import</span> GEval
+<span class="hljs-keyword">from</span> deepeval.test_case <span class="hljs-keyword">import</span> LLMTestCaseParams
+<span class="hljs-keyword">from</span> deepeval.test_case <span class="hljs-keyword">import</span> LLMTestCase
+
+correctness_metric = GEval(
+    name=<span class="hljs-string">"Correctness"</span>,
+    model=<span class="hljs-string">"gpt-3.5-turbo"</span>,
+    criteria=<span class="hljs-string">"Determine whether the actual output is factually correct"</span> + 
+    <span class="hljs-string">" based on the expected output."</span>,
+    evaluation_params=[LLMTestCaseParams.INPUT, LLMTestCaseParams.ACTUAL_OUTPUT],
+)
+</div></code></pre>
+<h5 id="2answer-relevancy">（2）<code>Answer Relevancy</code></h5>
+<p>官方文档对<code>Answer Relevancy</code>指标的描述：</p>
+<blockquote>
+<p>The answer relevancy metric measures the quality of your RAG pipeline's generator by evaluating how relevant the <code>actual_output </code>of your LLM application is compared to the provided <code>input</code>. deepeval's answer relevancy metric is a self-explaining LLM-Eval, meaning it outputs a reason for its metric score.</p>
+</blockquote>
+<p>计算方法：
+$$ Answer Relevancy= \frac{Number of Relevant Statements}{Total Number of Statements} $$</p>
+<p>定义<code>Answer Relevancy</code>矩阵：</p>
+<pre class="hljs"><code><div><span class="hljs-comment"># 引入评估指标2：答案相关性</span>
+<span class="hljs-keyword">from</span> deepeval <span class="hljs-keyword">import</span> evaluate
+<span class="hljs-keyword">from</span> deepeval.metrics <span class="hljs-keyword">import</span> AnswerRelevancyMetric
+<span class="hljs-keyword">from</span> deepeval.test_case <span class="hljs-keyword">import</span> LLMTestCase
+
+Relevancy_metric = AnswerRelevancyMetric(
+    threshold=<span class="hljs-number">0.7</span>,
+    model=<span class="hljs-string">"gpt-3.5-turbo"</span>,
+    include_reason=<span class="hljs-literal">True</span>
+)
+</div></code></pre>
+<h5 id="3contextual-relevancy">（3）<code>Contextual Relevancy</code></h5>
+<p>官方文档对<code>Contextual Relevancy</code>指标的描述：</p>
+<blockquote>
+<p>The contextual relevancy metric measures the quality of your RAG pipeline's retriever by evaluating the overall relevance of the information presented in your <code>retrieval_context</code> for a given <code>input</code>. deepeval's contextual relevancy metric is a self-explaining LLM-Eval, meaning it outputs a reason for its metric score.</p>
+</blockquote>
+<p>计算方法：
+$$ Contextual Relevancy= \frac{Number of Relevant Statements}{Total Number of Statements} $$
+​
+定义<code>Contextual Relevancy</code>矩阵：</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> deepeval <span class="hljs-keyword">import</span> evaluate
+<span class="hljs-keyword">from</span> deepeval.metrics <span class="hljs-keyword">import</span> ContextualRelevancyMetric
+<span class="hljs-keyword">from</span> deepeval.test_case <span class="hljs-keyword">import</span> LLMTestCase
+
+
+ContextualRelevancy_metric = ContextualRelevancyMetric(
+    threshold=<span class="hljs-number">0.7</span>,
+    model=<span class="hljs-string">"gpt-3.5-turbo"</span>,
+    include_reason=<span class="hljs-number">0</span>
+)
+</div></code></pre>
+<h5 id="4hallucination%E5%B9%BB%E8%A7%89">（4）<code>Hallucination</code>（幻觉）</h5>
+<p>官方文档对<code>Hallucination</code>指标的描述：</p>
+<blockquote>
+<p>The hallucination metric determines whether your LLM generates factually correct information by comparing the <code>actual_output</code> to the <code>provided context</code>.</p>
+</blockquote>
+<p>计算方法：
+$$ ​Hallucination= \frac{Number of Contradicted Contexts}{Total Number of Contexts} $$
+​
+定义<code>Contextual Relevancy</code>矩阵：</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> deepeval.metrics <span class="hljs-keyword">import</span> HallucinationMetric
+
+Hallucination_metric = HallucinationMetric(threshold=<span class="hljs-number">0.5</span>,model=<span class="hljs-string">"gpt-3.5-turbo"</span>)
+</div></code></pre>
+<h4 id="3-customllm-%E5%AE%9A%E4%B9%89">3. CustomLLM 定义</h4>
+<pre class="hljs"><code><div><span class="hljs-keyword">import</span> gradio <span class="hljs-keyword">as</span> gr
+<span class="hljs-keyword">from</span> deepeval.models.base_model <span class="hljs-keyword">import</span> DeepEvalBaseLLM
+
+<span class="hljs-comment"># 定义自定义模型</span>
+<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">CustomLLM</span><span class="hljs-params">(DeepEvalBaseLLM)</span>:</span>
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">__init__</span><span class="hljs-params">(self, query_engine)</span>:</span>
+        self.query_engine = query_engine
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">load_model</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> self.query_engine
+
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">generate</span><span class="hljs-params">(self, prompt: str)</span> -&gt; str:</span>
+        response = self.query_engine.query(prompt)
+        <span class="hljs-keyword">return</span> response
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">query</span><span class="hljs-params">(self, prompt: str)</span> -&gt; str:</span>
+        response = self.query_engine.query(prompt)
+        <span class="hljs-keyword">return</span> response
+
+    <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">a_generate</span><span class="hljs-params">(self, prompt: str)</span> -&gt; str:</span>
+        <span class="hljs-keyword">return</span> self.generate(prompt)
+    
+    <span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">get_model_name</span><span class="hljs-params">(self)</span>:</span>
+        <span class="hljs-keyword">return</span> <span class="hljs-string">"Custom OpenAI Embedding Model"</span>
+</div></code></pre>
+<h4 id="4-%E6%B5%8B%E8%AF%95%E4%B8%89%E7%A7%8D%E7%B4%A2%E5%BC%95%E4%B8%8B%E7%9A%84%E6%A8%A1%E5%9E%8B">4. 测试三种索引下的模型</h4>
+<h5 id="1%E5%BB%BA%E7%AB%8B%E7%B4%A2%E5%BC%95">（1）建立索引</h5>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> llama_index.core <span class="hljs-keyword">import</span> VectorStoreIndex,DocumentSummaryIndex
+<span class="hljs-comment"># from haystack.indexing.vector_store import VectorStoreIndex</span>
+<span class="hljs-keyword">from</span> llama_index.core <span class="hljs-keyword">import</span> KnowledgeGraphIndex
+<span class="hljs-keyword">from</span> langchain.vectorstores <span class="hljs-keyword">import</span> FAISS
+<span class="hljs-keyword">from</span> langchain_openai <span class="hljs-keyword">import</span> OpenAIEmbeddings
+
+<span class="hljs-comment"># OpenAIEmbeddings()  </span>
+print(<span class="hljs-string">"OpenAIEmbeddings:"</span>)
+index_OpenAIEmbeddings = VectorStoreIndex.from_documents(documents = documents, 
+StorageContext = <span class="hljs-literal">True</span>, embedding = OpenAIEmbeddings(), show_progress = <span class="hljs-number">1</span>)
+
+<span class="hljs-keyword">from</span> langchain.embeddings <span class="hljs-keyword">import</span> HuggingFaceBgeEmbeddings
+
+<span class="hljs-comment"># bge-large-zh-v1.5</span>
+print(<span class="hljs-string">"bge-large-zh-v1.5:"</span>)
+bge_embeddings = HuggingFaceBgeEmbeddings(model_name=<span class="hljs-string">"BAAI/bge-large-zh-v1.5"</span>)
+index_bge_large_zh = VectorStoreIndex.from_documents(
+  documents = documents, embedding = bge_embeddings, show_progress = <span class="hljs-number">1</span>)
+
+<span class="hljs-comment"># bge-M3</span>
+print(<span class="hljs-string">"bge-M3:"</span>)
+bgeM3_embeddings = HuggingFaceBgeEmbeddings(model_name=<span class="hljs-string">"BAAI/bge-M3"</span>)
+index_bge_M3 = VectorStoreIndex.from_documents(documents = documents, 
+embedding = bgeM3_embeddings, show_progress = <span class="hljs-number">1</span>)
+</div></code></pre>
+<h5 id="2%E5%AE%9A%E4%B9%89evaluateresponses%E6%B5%8B%E8%AF%95%E5%87%BD%E6%95%B0">（2）定义<code>evaluate_responses</code>测试函数</h5>
+<pre class="hljs"><code><div><span class="hljs-comment"># 准备函数retrieval_context(nodes_r)，用来返回、拼接检索到的文档内容</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">retrieval_context</span><span class="hljs-params">(nodes_r)</span>:</span>
+    context_template = <span class="hljs-string">" "</span>
+    context_ls = []
+    <span class="hljs-keyword">for</span> node_r <span class="hljs-keyword">in</span> nodes_r:
+        context_template = context_template + node_r.text+<span class="hljs-string">"\n"</span>
+        context_ls.append(node_r.text)
+        
+    <span class="hljs-keyword">return</span> context_template,context_ls
+</div></code></pre>
+<pre class="hljs"><code><div><span class="hljs-keyword">from</span> deepeval.metrics <span class="hljs-keyword">import</span> ToxicityMetric
+<span class="hljs-keyword">from</span> deepeval.test_case <span class="hljs-keyword">import</span> LLMTestCase
+
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">evaluate_responses</span><span class="hljs-params">(model, questions, expected_outputs)</span>:</span>
+    
+    <span class="hljs-keyword">assert</span> len(questions) == len(expected_outputs),
+     <span class="hljs-string">"questions 和 expected_outputs 列表长度不一致"</span>
+    
+    <span class="hljs-comment"># 调用上面矩阵来求各个评估指标</span>
+    Correctness = correctness_metric
+    Summarization = Summarization_metric
+    Relevancy = Relevancy_metric
+    ContextualRelevancy = ContextualRelevancy_metric
+    Hallucination = Hallucination_metric
+    
+    results = []
+
+    <span class="hljs-keyword">for</span> i, question <span class="hljs-keyword">in</span> enumerate(questions):
+        <span class="hljs-comment"># 生成 response</span>
+        response = model.generate(question)
+        
+        <span class="hljs-comment"># 求context内容</span>
+        retriever_base = index_OpenAIEmbeddings.as_retriever(similarity_top_k=<span class="hljs-number">5</span>)
+        nodes_r = retriever_base.retrieve(question)
+        context,context_ls = retrieval_context(nodes_r)
+        
+        <span class="hljs-comment"># 求对应 expected_output</span>
+        expected_output = expected_outputs[i]
+        
+        <span class="hljs-comment"># 求各种指标</span>
+        test_case = LLMTestCase(input=question, actual_output=response, 
+                                retrieval_context=context_ls, context = context_ls, 
+                                expected_output=expected_output)
+        Correctness.measure(test_case)
+        Summarization.measure(test_case)
+        Relevancy.measure(test_case)
+        ContextualRelevancy.measure(test_case)
+        Hallucination.measure(test_case)
+    
+        <span class="hljs-comment"># 生成result</span>
+        results.append({
+            <span class="hljs-string">'question'</span>: question,
+            <span class="hljs-string">'response'</span>: response,
+            <span class="hljs-string">'Correctness'</span>: Correctness.score,
+            <span class="hljs-string">'Summarization'</span>: Summarization.score,
+            <span class="hljs-string">'Relevancy'</span>: Relevancy.score,
+            <span class="hljs-string">'ContextualRelevancy'</span>: ContextualRelevancy.score,
+            <span class="hljs-string">'Hallucination'</span>: Hallucination.score,
+        })
+        
+    <span class="hljs-keyword">return</span> results
+</div></code></pre>
+<h5 id="3%E8%B0%83%E7%94%A8evaluateresponses%E6%B5%8B%E8%AF%95%E5%B9%B6%E5%B0%86%E7%BB%93%E6%9E%9C%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6">（3）调用<code>evaluate_responses</code>测试，并将结果写入文件</h5>
+<pre class="hljs"><code><div><span class="hljs-comment"># 初始化emb1_llm</span>
+emb1_engine = index_OpenAIEmbeddings.as_chat_engine(verbose=<span class="hljs-literal">True</span>)
+index_OpenAIEmbeddings.storage_context
+emb1_llm = CustomLLM(query_engine=emb1_engine)
+
+<span class="hljs-comment"># 初始化emb2_llm</span>
+emb2_engine = index_bge_large_zh.as_chat_engine(verbose=<span class="hljs-literal">True</span>)
+index_bge_large_zh.storage_context
+emb2_llm = CustomLLM(query_engine=emb2_engine)
+
+<span class="hljs-comment"># 初始化emb3_llm</span>
+emb3_engine = index_bge_M3.as_chat_engine(verbose=<span class="hljs-literal">True</span>)
+index_bge_M3.storage_context
+emb3_llm = CustomLLM(query_engine=emb3_engine)
+</div></code></pre>
+<pre class="hljs"><code><div>results_emb1 = evaluate_responses(emb1_llm, questions, expected_output)
+results_emb2 = evaluate_responses(emb2_llm, questions, expected_output)
+results_emb3 = evaluate_responses(emb3_llm, questions, expected_output)
+</div></code></pre>
+<p>得到result如下：</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-13.png" alt="alt text"></p>
+<h4 id="5-%E6%B5%8B%E8%AF%95%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E6%A8%A1%E5%9E%8B">5. 测试混合检索模型</h4>
+<h5 id="1%E8%B0%83%E7%94%A8%E4%B9%8B%E5%89%8D-bm25faiss-%E7%9A%84%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E5%99%A8">（1）调用之前 BM25+FAISS 的混合检索器</h5>
+<pre class="hljs"><code><div><span class="hljs-comment"># 初始化Ensemble Retriever</span>
+ensemble_retriever = EnsembleRetriever(
+    retrievers=[bm25_retriever, faiss_retriever], weights=[<span class="hljs-number">0.5</span>, <span class="hljs-number">0.5</span>]
+)
+</div></code></pre>
+<h5 id="2%E8%B0%83%E7%94%A8evaluateresponsesensemble%E6%B5%8B%E8%AF%95%E5%B9%B6%E5%B0%86%E7%BB%93%E6%9E%9C%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6">（2）调用<code>evaluate_responses_ensemble</code>测试，并将结果写入文件</h5>
+<pre class="hljs"><code><div>result_ensemble = evaluate_responses_ensemble(
+          emb1_llm, questions, ensemble_retriever, expected_output)
+</div></code></pre>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-14.png" alt=""></p>
+<h4 id="6-%E6%B5%8B%E8%AF%95hyde%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%86%99">6. 测试HyDE查询重写</h4>
+<h5 id="1%E8%B0%83%E7%94%A8evaluateresponseshyde%E6%B5%8B%E8%AF%95%E5%B9%B6%E5%B0%86%E7%BB%93%E6%9E%9C%E5%86%99%E5%85%A5%E6%96%87%E4%BB%B6">（1）调用<code>evaluate_responses_hyde</code>测试，并将结果写入文件</h5>
+<pre class="hljs"><code><div>result_hyde = evaluate_responses_hyde(emb1_llm, questions,expected_output)
+</div></code></pre>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-15.png" alt="alt text"></p>
+<h3 id="%E5%85%AD%E6%B5%8B%E8%AF%95%E7%BB%93%E6%9E%9C">六、测试结果</h3>
+<h4 id="1-%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%9C%E5%B1%95%E7%A4%BA">1. 整体结果展示</h4>
+<p>可以看到 ，模型在整体准确度和与问题的相关性、逻辑性（前后无矛盾）方面表现较好。对于大部分新闻内的细节问题，都能够准确作答。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Correctness</th>
+<th>Relevancy</th>
+<th>Contextual Relevancy</th>
+<th>Hallucination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>OpenAIEmbeddings</strong></td>
+<td>0.7699</td>
+<td>0.9650</td>
+<td>0.1400</td>
+<td>0.9829</td>
+</tr>
+<tr>
+<td><strong>bge-large-zh-v1.5</strong></td>
+<td>0.7235</td>
+<td>0.9025</td>
+<td>0.1600</td>
+<td>0.8900</td>
+</tr>
+<tr>
+<td><strong>bge-M3</strong></td>
+<td>0.7403</td>
+<td>0.8148</td>
+<td>0.2222</td>
+<td>0.9444</td>
+</tr>
+<tr>
+<td><strong>ensemble</strong></td>
+<td>0.6528</td>
+<td>0.7600</td>
+<td>0.1550</td>
+<td>0.8800</td>
+</tr>
+<tr>
+<td><strong>HyDE</strong></td>
+<td>0.6877</td>
+<td>1.0000</td>
+<td>0.2778</td>
+<td>0.9619</td>
+</tr>
+</tbody>
+</table>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-24.png" alt="alt text"></p>
+<h4 id="2-%E4%B8%89%E7%A7%8D%E5%B5%8C%E5%85%A5%E6%A8%A1%E5%9E%8B%E6%95%88%E6%9E%9C">2. 三种嵌入模型效果</h4>
+<p>OpenAIEmbeddings整体表现最优。</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-21.png" alt="alt text"></p>
+<h4 id="3-%E6%B7%B7%E5%90%88%E6%A3%80%E7%B4%A2%E6%95%88%E6%9E%9C">3. 混合检索效果</h4>
+<p>可以看到混合检索效果不佳，并不符合预期。猜想可能的原因有：检索模型的组合和权重可能欠考虑；检索返回的文档数目不合理，导致LLM在生成答案时受到影响等。</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-22.png" alt="alt text"></p>
+<h4 id="4-%E6%9F%A5%E8%AF%A2%E9%87%8D%E5%86%99%E6%95%88%E6%9E%9C">4. 查询重写效果</h4>
+<p>可以看出，使用查询重写后，比base的嵌入的engine的correctness下降了，relevance指标有所上升。分析原因，可能是由于查询重写的过程涉及生成与原始查询相关的假设性文档，扩展了查询的语义范围，捕捉到更多潜在的相关信息。这种语义扩展能够提升relevance指标，因为更多的相关文档被纳入了检索范围。但是这种扩展也可能引入一些与查询不完全匹配的文档，导致correctness下降。</p>
+<p><img src="file:///c:/Users/Thinkpad/Desktop/项目大作业——基于 LLM 和 RAG 的足球新闻检索系统/实验报告/image-23.png" alt="alt text"></p>
+
+</body>
+</html>
