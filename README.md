@@ -509,7 +509,8 @@ The official documentation describes the `Hallucination` metric as follows:
 > The hallucination metric determines whether your LLM generates factually correct information by comparing the `actual_output` to the `provided context`.
 
 Calculation formula:
-$$ ​Hallucination = \frac{Number of Contradicted Contexts}{Total Number of Contexts} $$
+
+$$ Hallucination = \frac{Number of Contradicted Contexts}{Total Number of Contexts} $$
 
 Define the `Contextual Relevancy` matrix:
 
@@ -519,3 +520,262 @@ from deepeval.metrics import HallucinationMetric
 Hallucination_metric = HallucinationMetric(threshold=0.5, model="gpt-3.5-turbo")
 ```
 
+#### 3. Defining CustomLLM
+
+```python
+import gradio as gr
+from deepeval.models.base_model import DeepEvalBaseLLM
+
+# 定义自定义模型
+class CustomLLM(DeepEvalBaseLLM):
+    def __init__(self, query_engine):
+        self.query_engine = query_engine
+
+    def load_model(self):
+        return self.query_engine
+
+    def generate(self, prompt: str) -> str:
+        response = self.query_engine.query(prompt)
+        return response
+    
+    def query(self, prompt: str) -> str:
+        response = self.query_engine.query(prompt)
+        return response
+
+    async def a_generate(self, prompt: str) -> str:
+        return self.generate(prompt)
+    
+    def get_model_name(self):
+        return "Custom OpenAI Embedding Model"
+```
+
+
+#### 4. Testing the model with three different embeddings
+##### （1）Building the Index
+```python
+from llama_index.core import VectorStoreIndex,DocumentSummaryIndex
+# from haystack.indexing.vector_store import VectorStoreIndex
+from llama_index.core import KnowledgeGraphIndex
+from langchain.vectorstores import FAISS
+from langchain_openai import OpenAIEmbeddings
+
+# OpenAIEmbeddings()  
+print("OpenAIEmbeddings:")
+index_OpenAIEmbeddings = VectorStoreIndex.from_documents(documents = documents, 
+StorageContext = True, embedding = OpenAIEmbeddings(), show_progress = 1)
+
+from langchain.embeddings import HuggingFaceBgeEmbeddings
+
+# bge-large-zh-v1.5
+print("bge-large-zh-v1.5:")
+bge_embeddings = HuggingFaceBgeEmbeddings(model_name="BAAI/bge-large-zh-v1.5")
+index_bge_large_zh = VectorStoreIndex.from_documents(
+  documents = documents, embedding = bge_embeddings, show_progress = 1)
+
+# bge-M3
+print("bge-M3:")
+bgeM3_embeddings = HuggingFaceBgeEmbeddings(model_name="BAAI/bge-M3")
+index_bge_M3 = VectorStoreIndex.from_documents(documents = documents, 
+embedding = bgeM3_embeddings, show_progress = 1)
+```
+
+##### （2）Defining `evaluate_responses` to test the outcome
+```python
+# 准备函数retrieval_context(nodes_r)，用来返回、拼接检索到的文档内容
+def retrieval_context(nodes_r):
+    context_template = " "
+    context_ls = []
+    for node_r in nodes_r:
+        context_template = context_template + node_r.text+"\n"
+        context_ls.append(node_r.text)
+        
+    return context_template,context_ls
+```
+
+```python
+from deepeval.metrics import ToxicityMetric
+from deepeval.test_case import LLMTestCase
+
+def evaluate_responses(model, questions, expected_outputs):
+    
+    assert len(questions) == len(expected_outputs),
+     "questions 和 expected_outputs 列表长度不一致"
+    
+    # 调用上面矩阵来求各个评估指标
+    Correctness = correctness_metric
+    Summarization = Summarization_metric
+    Relevancy = Relevancy_metric
+    ContextualRelevancy = Contex
+```
+
+### 五、Utilizing `DeepEval` to evaluate the system
+
+#### 1. 测试整体思路
+测试一共要测试三种变量：哪种embedding、是否混合检索、是否查询重写，对这三个变量形成的组合进行5个指标的测评
+
+- **测试embedding**</br>
+**控制变量**:不混合检索、不查询重写 </br>
+**测试**:更换index_OpenAIEmbeddings、index_bge_large_zh、index_bge_M3，看指标</br>
+
+- **测试混合检索** </br>
+**控制变量**：使用index_OpenAIEmbeddings，不查询重写 </br>
+**测试**：是否混合检索 </br>
+
+- **测试查询重写** </br>
+**控制变量**：使用index_OpenAIEmbeddings，不混合检索 </br>
+**测试**：是否查询重写 </br>
+
+#### 2. 测试数据集准备
+针对原始数据集中的新闻，本测试过程采用OpenAI公司的`gpt-4o`模型生成了20个细节问题和答案，其中，问题存为`questions`，答案存为`expected_outputs`。之所以选取20个问题，是因为openai的api接口在调用时有限额，且整个指标计算过程较慢，从经济成本和时间成本两方面考虑，本测试过程的问题集容量选取20较为合适。
+
+Question Set `query_new`(all in Chinese, beacuse the project was originally finished in Chinese):
+>- 在这次转会窗口，巴塞罗那计划如何处理财政问题以引进Amadou Onana？
+>- Karim Benzema在沙特阿拉伯遇到了哪些问题，这对他和俱乐部有何影响？
+>- 曼联球员Lisandro Martinez受伤后，球队的战术和阵容发生了什么变化？
+>- Ferran Torres在比赛中向一名癌症患者致敬，这对球员和球迷有何意义？
+>- 为什么Takehiro Tomiyasu在对阵West Ham United的比赛中缺席？他何时可能会重返阵容？
+>- 巴塞罗那被Villarreal重创后，他们与皇马的积分差多少？这对巴萨的联赛前景有何影响？
+>- Cole Palmer在切尔西对阵水晶宫的比赛中表现出色，他提到了Mauricio Pochettino在胜利中的作用是什么？
+>- 在对阵阿斯顿维拉的比赛中，切尔西的球迷建议的终极阵容是什么？
+>- 在对阵托特纳姆热刺的比赛中，曼联球迷对马库斯·拉什福德的表现有什么意见？
+>- 吉安路易吉·布冯表示在他职业生涯中哪个前锋对他造成了最大的痛苦？
+>- 切尔西的蒂亚戈·席尔瓦在对阵水晶宫的比赛中做了什么冒险行为？
+>- 2023年斯坦福桥的比赛中，哪位球员在第71分钟进球使阿斯顿维拉战胜切尔西？
+>- 切尔西在2024年足总杯第三轮中以4-0战胜了哪支球队？
+>- 在2024年2月初对阵埃弗顿的比赛中，阿斯顿维拉取得了什么结果？
+>- 切尔西在2024年与阿斯顿维拉的比赛中，预计最有可能的比分是什么？
+>- 2024年利物浦对阵阿森纳的比赛中，克洛普是否对达尔文·努涅斯不上场感到后悔？
+>- 克洛普在2024年对阵阿森纳的比赛中，提到球队应该如何提高？
+>- 康纳·加拉格尔在2024年对阵水晶宫的比赛中打进了多少球？
+>- 康纳·加拉格尔在对阵水晶宫的比赛中，被评为比赛最佳球员后提到了什么关于主教练的战术调整？
+>- 梅西、苏亚雷斯、阿尔巴和布斯克茨在2024年为哪支球队展示了他们的出色配合？
+
+Answer SET`expected_output`（data type:`list`）：
+
+>- 巴塞罗那计划通过出售一些球员来筹集资金，可能会将Frenkie De Jong和Ronald Araujo列入出售名单，以便购买Amadou Onana。
+>- Karim Benzema与Al Ittihad的主教练Marcelo Gallardo发生了冲突，这可能对他在俱乐部的未来产生影响，并可能影响球队的氛围和战绩。
+>- Lisandro Martinez受伤后，曼联可能需要调整他们的防守组织和中场配置，可能会影响他们在比赛中的表现和战术风格。
+>- Ferran Torres的这个举动展现了他的人道主义精神和对球迷的关怀，这可能会赢得更多球迷的支持和尊重，同时也为球迷带来了温暖和鼓舞。
+>- Takehiro Tomiyasu因为国家队比赛后出现了小伤，所以缺席了比赛。目前尚不清楚他何时可以重返阵容，但希望他的伤势只是轻微的问题。
+>- 巴塞罗那在主场被Villarreal以5-3击败，导致他们与皇马的积分差距达到了10分。这对巴萨本赛季的联赛前景造成了不小的影响，使得他们的冠军希望受到挑战。
+>- Cole Palmer提到了Mauricio Pochettino在胜利中的作用，称赞了他的指导和支持，认为Pochettino对球队的凝聚力和信心给予了很大的帮助。这表明了Pochettino在切尔西的作用和影响。
+>- Petrovic；迪萨西、蒂亚戈·席尔瓦、巴迪亚希尔；奇尔维尔、凯塞多、恩佐、古斯托；帕尔默、杰克逊、恩昆库。tualRelevancy_metric
+    Hallucination = Hallucination_metric
+    
+    results = []
+
+    for i, question in enumerate(questions):
+        # 生成 response
+        response = model.generate(question)
+        
+        # 求context内容
+        retriever_base = index_OpenAIEmbeddings.as_retriever(similarity_top_k=5)
+        nodes_r = retriever_base.retrieve(question)
+        context,context_ls = retrieval_context(nodes_r)
+        
+        # 求对应 expected_output
+        expected_output = expected_outputs[i]
+        
+        # 求各种指标
+        test_case = LLMTestCase(input=question, actual_output=response, 
+                                retrieval_context=context_ls, context = context_ls, 
+                                expected_output=expected_output)
+        Correctness.measure(test_case)
+        Summarization.measure(test_case)
+        Relevancy.measure(test_case)
+        ContextualRelevancy.measure(test_case)
+        Hallucination.measure(test_case)
+    
+        # 生成result
+        results.append({
+            'question': question,
+            'response': response,
+            'Correctness': Correctness.score,
+            'Summarization': Summarization.score,
+            'Relevancy': Relevancy.score,
+            'ContextualRelevancy': ContextualRelevancy.score,
+            'Hallucination': Hallucination.score,
+        })
+        
+    return results
+```
+##### （3）调用`evaluate_responses`测试，并将结果写入文件
+```python
+# 初始化emb1_llm
+emb1_engine = index_OpenAIEmbeddings.as_chat_engine(verbose=True)
+index_OpenAIEmbeddings.storage_context
+emb1_llm = CustomLLM(query_engine=emb1_engine)
+
+# 初始化emb2_llm
+emb2_engine = index_bge_large_zh.as_chat_engine(verbose=True)
+index_bge_large_zh.storage_context
+emb2_llm = CustomLLM(query_engine=emb2_engine)
+
+# 初始化emb3_llm
+emb3_engine = index_bge_M3.as_chat_engine(verbose=True)
+index_bge_M3.storage_context
+emb3_llm = CustomLLM(query_engine=emb3_engine)
+```
+```python
+results_emb1 = evaluate_responses(emb1_llm, questions, expected_output)
+results_emb2 = evaluate_responses(emb2_llm, questions, expected_output)
+results_emb3 = evaluate_responses(emb3_llm, questions, expected_output)
+```
+得到result如下：
+
+![alt text](picture/image-13.png)
+
+#### 5. 测试混合检索模型
+##### （1）调用之前 `BM25`+`FAISS` 的混合检索器
+```python
+# 初始化Ensemble Retriever
+ensemble_retriever = EnsembleRetriever(
+    retrievers=[bm25_retriever, faiss_retriever], weights=[0.5, 0.5]
+)
+```
+##### （2）调用`evaluate_responses_ensemble`测试，并将结果写入文件
+```python
+result_ensemble = evaluate_responses_ensemble(
+          emb1_llm, questions, ensemble_retriever, expected_output)
+```
+![](picture/image-14.png)
+
+#### 6. 测试HyDE查询重写
+##### （1）调用`evaluate_responses_hyde`测试，并将结果写入文件
+```python
+result_hyde = evaluate_responses_hyde(emb1_llm, questions,expected_output)
+```
+![alt text](picture/image-15.png)
+
+### 6. Test Results
+#### 1. Overall Results
+
+It can be observed that the model performs well in terms of overall accuracy, relevancy, and contextual relevancy (with no contradictions between different parts). For most of the detailed questions within the news articles, it provides accurate answers.
+
+|                  | Correctness | Relevancy | Contextual Relevancy | Hallucination |
+|------------------|-------------|-----------|----------------------|---------------|
+| **OpenAIEmbeddings** | 0.7699      | 0.9650    | 0.1400               | 0.9829        |
+| **bge-large-zh-v1.5** | 0.7235      | 0.9025    | 0.1600               | 0.8900        |
+| **bge-M3** | 0.7403      | 0.8148    | 0.2222               | 0.9444        |
+| **ensemble** | 0.6528  | 0.7600    | 0.1550               | 0.8800        |
+| **HyDE**  | 0.6877      | 1.0000    | 0.2778               | 0.9619        |
+
+![alt text](picture/image-24.png)
+
+#### 2. Three Embedding Models Performance
+
+`OpenAIEmbeddings` performs the best overall.
+
+![alt text](picture/image-21.png)
+
+#### 3. Hybrid Retrieval Performance
+
+It can be seen that the hybrid retrieval performance is not as expected. Possible reasons for this could be that the combination and weight of the retrieval models were not adequately considered, or the number of documents returned during retrieval was unreasonable, which impacted the LLM's ability to generate answers.
+
+![alt text](picture/image-22.png)
+
+#### 4. Query Rewriting Performance
+
+As shown, after applying query rewriting, the correctness metric decreased compared to the base embedding engine, while the relevancy metric increased. This could be due to the fact that the query rewriting process involves generating hypothetical documents related to the original query, thus expanding the semantic range of the query and capturing more potentially relevant information. This semantic expansion can improve the relevancy metric, as more relevant documents are included in the retrieval scope. However, this expansion may also introduce documents that do not fully match the query, leading to a decrease in correctness.
+
+![alt text](picture/image-23.png)
