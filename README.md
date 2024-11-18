@@ -474,9 +474,8 @@ correctness_metric = GEval(
 
 Definition: Measures the relevance of the `actual_output` compared to the provided `input`.  
 Formula:  
-\[
-Answer\ Relevancy = \frac{\text{Number of Relevant Statements}}{\text{Total Number of Statements}}
-\]
+
+$$ Answer Relevancy = \frac{\Number of Relevant Statements}{Total Number of Statements} $$
 
 ```python
 from deepeval.metrics import AnswerRelevancyMetric
