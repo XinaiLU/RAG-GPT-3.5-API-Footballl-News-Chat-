@@ -20,7 +20,7 @@ Specific requirements include:
 
 Based on the project requirements, the implementation approach is outlined as follows:
 
-![alt text](<未命名文件 (2).png>)
+![alt text](<picture/未命名文件 (2).png>)
 
 First, a simple dialogue model is built using `LlamaIndex`. Optimization is then performed in three areas: indexing methods, hybrid retrieval, and query rewriting. Finally, the responses from the basic model and the optimized model are evaluated using four metrics within the `DeepEval` framework to compare their performance.
 
@@ -76,7 +76,7 @@ index_OpenAIEmbeddings = VectorStoreIndex.from_documents(documents = documents,
 
 Indexing process:
 
-![alt text](image-1.png)
+![alt text](picture/image-1.png)
 
 #### 4. Generate Responses with the RAG Retrieval Engine `get_response(query)`
 
@@ -111,5 +111,5 @@ iface.launch()
 
 【Interface and Q&A Effect】Input a question, click the `Submit` button to submit the query, and the engine will display the response after enhanced retrieval in the `output` dialogue box on the right. Users can click `Flagged` to save both the query and the engine's response to a backend file. Users can also click the `Clear` button on the left to reset the input and ask a new question.
 
-![alt text](8abea2cac30f25fef7fb7a50b756e3e.png)
+![alt text](picture/8abea2cac30f25fef7fb7a50b756e3e.png)
 ```
