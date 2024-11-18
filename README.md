@@ -1,4 +1,4 @@
-## <center>Implementing a Football Domain-Specific Knowledge Dialogue Model with Enhanced Retrieval </center>
+## <center> A Football Domain-Specific Knowledge Dialogue Model with Enhanced Retrieval </center>
 ### <center>Information Retrieval - Final Project</center>
 
 ### 1. Project Requirements
