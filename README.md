@@ -608,25 +608,25 @@ def evaluate_responses(model, questions, expected_outputs):
     ContextualRelevancy = Contex
 ```
 
-### 五、Utilizing `DeepEval` to evaluate the system
+### 5. Utilizing `DeepEval` to Evaluate the System
 
-#### 1. 测试整体思路
-测试一共要测试三种变量：哪种embedding、是否混合检索、是否查询重写，对这三个变量形成的组合进行5个指标的测评
+#### 1. Testing Approach
+The testing involves evaluating three variables: which embedding to use, whether to use hybrid retrieval, and whether to apply query rewriting. Five metrics will be used to assess all combinations of these three variables.
 
-- **测试embedding**</br>
-**控制变量**:不混合检索、不查询重写 </br>
-**测试**:更换index_OpenAIEmbeddings、index_bge_large_zh、index_bge_M3，看指标</br>
+- **Testing Embeddings**  
+**Controlled Variables**: No hybrid retrieval, no query rewriting  
+**Test**: Switch between `index_OpenAIEmbeddings`, `index_bge_large_zh`, and `index_bge_M3` and assess the metrics.
 
-- **测试混合检索** </br>
-**控制变量**：使用index_OpenAIEmbeddings，不查询重写 </br>
-**测试**：是否混合检索 </br>
+- **Testing Hybrid Retrieval**  
+**Controlled Variables**: Use `index_OpenAIEmbeddings`, no query rewriting  
+**Test**: Whether to use hybrid retrieval.
 
-- **测试查询重写** </br>
-**控制变量**：使用index_OpenAIEmbeddings，不混合检索 </br>
-**测试**：是否查询重写 </br>
+- **Testing Query Rewriting**  
+**Controlled Variables**: Use `index_OpenAIEmbeddings`, no hybrid retrieval  
+**Test**: Whether to apply query rewriting.
 
-#### 2. 测试数据集准备
-针对原始数据集中的新闻，本测试过程采用OpenAI公司的`gpt-4o`模型生成了20个细节问题和答案，其中，问题存为`questions`，答案存为`expected_outputs`。之所以选取20个问题，是因为openai的api接口在调用时有限额，且整个指标计算过程较慢，从经济成本和时间成本两方面考虑，本测试过程的问题集容量选取20较为合适。
+#### 2. Test Dataset Preparation
+For the original dataset of news articles, 20 detailed questions and answers were generated using OpenAI's `gpt-4o` model. The questions are stored as `questions` and the answers as `expected_outputs`. The choice of 20 questions is due to OpenAI's API rate limits, and given the slow pace of the metric calculation process, a question set of 20 was deemed appropriate considering both economic and time costs.
 
 Question Set `query_new`(all in Chinese, beacuse the project was originally finished in Chinese):
 >- 在这次转会窗口，巴塞罗那计划如何处理财政问题以引进Amadou Onana？
@@ -726,22 +726,22 @@ results_emb3 = evaluate_responses(emb3_llm, questions, expected_output)
 ![alt text](picture/image-13.png)
 
 #### 5. 测试混合检索模型
-##### （1）调用之前 `BM25`+`FAISS` 的混合检索器
+##### （1） `BM25`+`FAISS` 
 ```python
 # 初始化Ensemble Retriever
 ensemble_retriever = EnsembleRetriever(
     retrievers=[bm25_retriever, faiss_retriever], weights=[0.5, 0.5]
 )
 ```
-##### （2）调用`evaluate_responses_ensemble`测试，并将结果写入文件
+##### （2）`evaluate_responses_ensemble`, wrute the outcome to the file
 ```python
 result_ensemble = evaluate_responses_ensemble(
           emb1_llm, questions, ensemble_retriever, expected_output)
 ```
 ![](picture/image-14.png)
 
-#### 6. 测试HyDE查询重写
-##### （1）调用`evaluate_responses_hyde`测试，并将结果写入文件
+#### 6. Evaluating the HyDE
+##### （1）`evaluate_responses_hyde`
 ```python
 result_hyde = evaluate_responses_hyde(emb1_llm, questions,expected_output)
 ```
