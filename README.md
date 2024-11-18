@@ -7,7 +7,7 @@ Large language models (LLMs), such as ChatGPT, have demonstrated powerful capabi
 
 This project requires constructing a system capable of answering 2024 football news questions using the `LlamaIndex` framework, combining large language models with RAG techniques.
 
-![alt text](image.png)
+![alt text](picture/image.png)
 
 Specific requirements include:
 
