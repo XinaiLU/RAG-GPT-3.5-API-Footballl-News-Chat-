@@ -1,5 +1,5 @@
-## <center>Information Retrieval - Final Project</center>
-### <center> —— Implementing a Football Domain-Specific Knowledge Dialogue Model with Enhanced Retrieval Using LlamaIndex Framework </center>
+## <center> —— Implementing a Football Domain-Specific Knowledge Dialogue Model with Enhanced Retrieval Using LlamaIndex Framework </center>
+### <center>Information Retrieval - Final Project</center>
 
 ### 1. Project Requirements
 
